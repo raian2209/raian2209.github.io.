@@ -37,7 +37,7 @@ function d (){ fetch("./teste.txt")
   //  auxiliarrand = listaauxiliar(data.length)
   
     document.getElementById('output').innerHTML = data.join('')
-    var m = document.querySelectorAll('.memory-card1');
+    var m = document.getElementById('output').querySelectorAll('.memory-card1');
     let hasFlippedCard = false;
     let lockBoard = false;
     let firstCard, secondCard;
@@ -47,7 +47,40 @@ function d (){ fetch("./teste.txt")
    
     z.forEach(card => card.addEventListener('click', flipCard));
 
+    ajustarTabuleiro();
+
 })}
+
+/* Calcula o tamanho de carta que melhor aproveita a tela (largura e altura),
+   para que o tabuleiro caiba sem rolagem sempre que possível. */
+function ajustarTabuleiro() {
+  const board = document.getElementById('output');
+  const cartas = board.querySelectorAll('.memory-card1').length;
+  if (!cartas) return;
+
+  const estilo = getComputedStyle(board);
+  const gap = parseFloat(estilo.rowGap) || 8;
+  const largura = board.clientWidth
+    - parseFloat(estilo.paddingLeft) - parseFloat(estilo.paddingRight);
+  const altura = window.innerHeight - board.offsetTop
+    - parseFloat(estilo.paddingBottom) - 8;
+  const proporcao = 8 / 7; // altura / largura da carta
+
+  let melhor = 0;
+  for (let colunas = 1; colunas <= cartas; colunas++) {
+    const linhas = Math.ceil(cartas / colunas);
+    const porLargura = (largura - gap * (colunas - 1)) / colunas;
+    const porAltura = (altura - gap * (linhas - 1)) / linhas / proporcao;
+    melhor = Math.max(melhor, Math.min(porLargura, porAltura));
+  }
+
+  // nunca menor que o alvo de toque confortável, nem exageradamente grande
+  melhor = Math.max(56, Math.min(melhor, 170));
+  board.style.setProperty('--card-min', melhor + 'px');
+}
+
+window.addEventListener('resize', ajustarTabuleiro);
+window.addEventListener('orientationchange', ajustarTabuleiro);
 
 function listaauxiliar(n){
   auxiliarrand = []

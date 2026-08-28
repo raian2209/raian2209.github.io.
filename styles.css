@@ -4,222 +4,150 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* largura mínima de uma carta: o grid decide quantas colunas cabem */
+  --card-min: clamp(70px, 19vw, 140px);
+  --gap: clamp(5px, 1.4vw, 12px);
+  --card-ratio: 7 / 8;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
 a {
   color: black;
+  text-decoration: none;
 }
 
 body {
-  height: 100%;
+  min-height: 100vh;
   background-image: url("rename2.jpg");
   background-size: cover;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   background-position: center;
+  background-attachment: scroll;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-.memory-game {
-  width: 940px;
-  height: 640px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  perspective: 1000px;
-  justify-content: center;
-}
+/* ---------- tabuleiro ---------- */
 
+.memory-game,
 .memory-game1 {
-  /* width: 1340px;
-  height: 940px;*/
-  width: 1082px;
-  height: 940px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  perspective: 1000px;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 0 var(--gap) calc(var(--gap) * 2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
+  gap: var(--gap);
   justify-content: center;
-  align-items: space-around;
+  perspective: 1000px;
 }
 
-
-.memory-card {
-  width: calc(40% - 10px);
-  height: calc(53.333% - 10px);
-  /*width: 258;
-  height: 303.328;*/
-  margin: 5px;
-  position: relative;
-  transform: scale(1);
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-}
-
+.memory-card,
 .memory-card1 {
-  width: calc(25% - 10px);
-  height: calc(43.333% - 10px);
-  /*width: 258;
-  height: 303.328;*/
-  margin: 5px;
+  aspect-ratio: var(--card-ratio);
   position: relative;
   transform: scale(1);
   transform-style: preserve-3d;
   transition: transform 0.5s;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-/* .memory-card1:not(:hover){
-
-} */
-
-/* 
-.front-face:hover {
-  animation: grow-and-shrink;
-  animation-duration: 2000ms;
-  animation-timing-function: ease-in-out;
-  animation-direction: alternate;
-  animation-iteration-count: infinite;
-  animation-play-state: initial;
-} */
-
-
-
-.memory-card:active {
-  transform: scale(0.97);
-  transition: transform 0.2s;
-}
-
-.memory-card.flip {
-  transform: rotateY(180deg);
-}
-
+.memory-card:active,
 .memory-card1:active {
   transform: scale(0.97);
   transition: transform 0.2s;
 }
 
+.memory-card.flip,
 .memory-card1.flip {
   transform: rotateY(180deg);
 }
 
-/* #teste{ */
-/* width: 100%;
-  height: 50%;
-  /* padding: 20px; */
-/* position: absolute;
-  border-radius: 5px;
-  background: #1c7ccc;
-  backface-visibility: hidden; */
-/* } */
-/* #teste1{ */
-/* width: 100%;
-  height: 100%;
-  padding-top: 50%;  */
-
-/* } */
-
 .front-face,
 .back-face {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  /* padding: 20px; */
-  position: absolute;
-  border-radius: 5px;
+  object-fit: cover;
+  border-radius: 6px;
   background: #1c7ccc;
-  backface-visibility: hidden; 
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
 }
 
 .front-face {
   transform: rotateY(180deg);
 }
 
-.voltar-sair {
-  width: 70px;
-  height: 70px;
-  display: flex;
-  margin: auto;
-}
+/* ---------- menu ---------- */
 
 .centralise {
-  /* padding-left: 300px; */
-  margin: auto;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: clamp(8px, 2vw, 16px) var(--gap);
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  width: 700px;
+  align-items: stretch;
+  gap: clamp(6px, 1.5vw, 12px);
 }
 
-.but1 {
-  letter-spacing: 2.5px;
-  position: relative;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  background-color: rgba(219, 87, 5, 1);
-  font-family: 'Yanone Kaffeesatz';
-  font-weight: 200;
-  font-size: 34px;
-  /* 22px */
-  display: block;
-
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  /* -webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 20px rgba(0,0,0,.5);
-    -moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 20px rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 9px 10px rgba(219,31,5,1), 0px 9px 20px rgba(0,0,0,.5); */
-  margin: 10px auto;
-  width: 200px;
-  text-align: center;
-
-  -webkit-transition: all .1s ease;
-  -moz-transition: all .1s ease;
-  -ms-transition: all .1s ease;
-  -o-transition: all .1s ease;
-  transition: all .1s ease;
-}
-
-.but1:active {
-  -webkit-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-  -moz-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-  box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-  position: relative;
-  top: 6px;
-}
-
+.but1,
 .but1e {
-  letter-spacing: 3px;
+  letter-spacing: 1.5px;
   position: relative;
   color: rgb(0, 0, 0);
   text-decoration: none;
   background-color: rgba(219, 87, 5, 1);
-  font-family: 'Yanone Kaffeesatz';
+  font-family: 'Yanone Kaffeesatz', Arial, sans-serif;
   font-weight: 200;
-
-  font-size: 34px;
-  /* 22px */
-  display: block;
-
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
+  font-size: clamp(16px, 2.2vw, 30px);
+  line-height: 1.1;
+  border: 0;
   border-radius: 8px;
-  /* -webkit-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 20px rgba(0,0,0,.5);
-    -moz-box-shadow: 0px 9px 0px rgba(219,31,5,1), 0px 9px 20px rgba(0,0,0,.5);
-    box-shadow: 0px 9px 10px rgba(219,31,5,1), 0px 9px 20px rgba(0,0,0,.5); */
-  margin: 10px auto;
-  width: 200px;
+  padding: 10px clamp(10px, 2vw, 20px);
+  min-height: 48px;
+  /* toque confortável */
+  flex: 1 1 auto;
+  min-width: 110px;
+  max-width: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-
-  -webkit-transition: all .1s ease;
-  -moz-transition: all .1s ease;
-  -ms-transition: all .1s ease;
-  -o-transition: all .1s ease;
+  cursor: pointer;
   transition: all .1s ease;
 }
 
+.but1 a,
+.but1e a {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.but1:active,
 .but1e:active {
-  -webkit-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-  -moz-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
   box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px rgba(0, 0, 0, .9);
-  position: relative;
-  top: 6px;
+  top: 3px;
+}
+
+.voltar-sair {
+  width: clamp(48px, 12vw, 70px);
+  height: clamp(48px, 12vw, 70px);
+  display: block;
+  margin: 16px auto;
 }
 
 @keyframes grow-and-shrink {
@@ -232,40 +160,53 @@ body {
   }
 }
 
-@media (max-width:1000px) {
-  .centralise {
-    padding-left: 250px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    width: 1240px;
+/* ---------- ajustes por tela ---------- */
+
+/* celulares em pé: cartas menores para caber mais colunas */
+@media (max-width: 600px) {
+  :root {
+    --card-min: clamp(64px, 21vw, 96px);
   }
 
-  .memory-card1 {
-    width: calc(25% - 10px);
-    height: calc(43.333% - 10px);
-    /*width: 258;
-  height: 303.328;*/
-    margin: 5px;
-    position: relative;
-    transform: scale(1);
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  .but1,
+  .but1e {
+    letter-spacing: 1px;
+    min-width: calc(50% - 12px);
+    max-width: none;
+  }
+}
+
+/* celulares deitados: aproveita a altura curta */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --card-min: clamp(56px, 9vw, 90px);
   }
 
-  .memory-game1 {
-    width: 1340px;
-    height: 940px;
-    /*width: 1082px;
-  height: 940px;*/
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    perspective: 1000px;
-    justify-content: center;
-    align-items: space-around;
+  .but1,
+  .but1e {
+    font-size: 16px;
+    min-height: 40px;
+    padding: 6px 12px;
+    min-width: 90px;
+  }
+}
+
+/* telas grandes: limita o crescimento das cartas */
+@media (min-width: 1200px) {
+  :root {
+    --card-min: 150px;
+  }
+}
+
+@media (hover: hover) {
+
+  .memory-card:hover,
+  .memory-card1:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
-
+  .but1:hover,
+  .but1e:hover {
+    filter: brightness(1.1);
+  }
 }
